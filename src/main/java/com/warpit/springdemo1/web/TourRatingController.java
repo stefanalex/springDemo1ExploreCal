@@ -92,16 +92,17 @@ public class TourRatingController {
     * @param tourId Tour Identifier
     * @return All Tour Ratings as RatingDto's
     */
-	/*
-	 * @GetMapping public Page<RatingDto>
-	 * getAllRatingsForTourPages(@PathVariable(value = "tourId") int tourId,Pageable
-	 * pageable) { verifyTour(tourId);
-	 * 
-	 * Page<TourRating> ratings = tourRatingRepository.findByPkTourIdPage(tourId,
-	 * pageable); return new PageImpl<>(
-	 * ratings.get().map(RatingDto::new).collect(Collectors.toList()), pageable,
-	 * ratings.getTotalElements() ); }
-	 */
+	
+	  @GetMapping 
+	  @RequestMapping(path = "/Page") 
+	  public Page<RatingDto> getAllRatingsForTourPages(@PathVariable(value = "tourId") int tourId,Pageable pageable) { 
+		  verifyTour(tourId);
+	      Page<TourRating> ratings = tourRatingRepository.findByPkTourId(tourId, pageable); 
+	      return new PageImpl<>( ratings.get().map(RatingDto::new).collect(Collectors.toList()), pageable,
+	    		  										ratings.getTotalElements() 
+	                           ); 
+	      }
+	 
    
    
    /**

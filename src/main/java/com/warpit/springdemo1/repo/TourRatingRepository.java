@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.warpit.springdemo1.domain.TourRating;
@@ -17,7 +18,7 @@ import java.util.Optional;
  */
 
 @RepositoryRestResource(exported = false)
-public interface TourRatingRepository extends CrudRepository<TourRating, TourRatingPk> {
+public interface TourRatingRepository extends PagingAndSortingRepository<TourRating, TourRatingPk> {
 
     /**
      * Lookup all the TourRatings for a tour.
@@ -36,5 +37,16 @@ public interface TourRatingRepository extends CrudRepository<TourRating, TourRat
     Optional<TourRating> findByPkTourIdAndPkCustomerId(Integer tourId, Integer customerId);
     
     
-   // Page<TourRating> findByPkTourIdPage(Integer tourId,Pageable pageable);
+    /**
+     * I ran into the same issue when I had named an embedded ID as MyCompositePK and tried writing f
+     * indByMyCompositePKUserId(Long userId). 
+     * The point is, it needs to be camel case as well for the CRUD repository, 
+     * so as to differentiate between the table properties when creating the query out of your method.
+     * So, it has to be MyCompositePk and findByMyCompositePkUserId(Long userId)
+     * @param tourId
+     * @param pageable
+     * @return
+     */
+    
+    Page<TourRating> findByPkTourId(Integer tourId,Pageable pageable);
 }
